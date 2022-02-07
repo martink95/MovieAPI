@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace MovieAPI.Models.DTO.Movie
+﻿namespace MovieAPI.Models.DTO.Movie
 {
-    public class MovieReadDTO
+    public class MovieUpdateDTO
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Genre { get; set; }
         public string ReleaseYear { get; set; }
@@ -11,6 +10,5 @@ namespace MovieAPI.Models.DTO.Movie
         public string Picture { get; set; }
         public string Trailer { get; set; }
         public int FranchiseId { get; set; }
-        public List<int> Characters { get; set; }
     }
 }

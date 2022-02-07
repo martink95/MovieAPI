@@ -10,7 +10,6 @@ namespace MovieAPI.Models.Domain
     {
         // Primary Key
         public int Id { get; set; }
-
         // Fields
         [Required]
         [MaxLength(50)]
@@ -20,7 +19,6 @@ namespace MovieAPI.Models.Domain
         public string Gender { get; set; }
         // No max length set to picture because URLs can be long strings.
         public string Picture { get; set; }
-
         // Relationships
         public ICollection<Movie> Movies { get; set; }
     }

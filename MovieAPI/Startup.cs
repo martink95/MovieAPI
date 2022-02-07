@@ -12,7 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MovieAPI.Interfaces;
 using MovieAPI.Models;
+using MovieAPI.Services;
 
 namespace MovieAPI
 {
@@ -32,7 +34,10 @@ namespace MovieAPI
             services.AddControllers();
             services.AddDbContext<MovieDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<ICharacterService, CharacterService>();
+            services.AddScoped<IFranchiseService, FranchiseService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieAPI", Version = "v1" });

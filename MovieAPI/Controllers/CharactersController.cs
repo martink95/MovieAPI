@@ -31,7 +31,7 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Fetches all the Characters.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns data of all characters.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IEnumerable<CharacterReadDTO>> GetAllCharacters()
@@ -42,8 +42,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Fetches a Character by Id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The character id to fetch from.</param>
+        /// <returns>Return data of given character.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -60,8 +60,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Updates a character, must pass a full Character object and Id to route.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="cdto"></param>
+        /// <param name="id">The id of character to update.</param>
+        /// <param name="cdto">The character object to update.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -84,8 +84,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Adds a new Character to database.
         /// </summary>
-        /// <param name="cdto"></param>
-        /// <returns></returns>
+        /// <param name="cdto">The character object to add.</param>
+        /// <returns>Returns character added.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Character>> PostCharacter(CharacterCreateDTO cdto)
@@ -102,7 +102,7 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Deletes Character from database by id.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The id of character to delete.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

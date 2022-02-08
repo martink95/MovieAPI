@@ -34,7 +34,7 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Fetches all movies.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns movie data.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetAllMovies()
@@ -45,8 +45,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Fetches movie by id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The movie id.</param>
+        /// <returns>Returns data of given movie.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,8 +63,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Adds a new Movie to database.
         /// </summary>
-        /// <param name="mdto"></param>
-        /// <returns></returns>
+        /// <param name="mdto">The movie to add to table.</param>
+        /// <returns>Returns movie created.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Movie>> PostMovie(MovieCreateDTO mdto)
@@ -81,8 +81,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Updates Movie, must pass a full Movie object and id to route.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="mdto"></param>
+        /// <param name="id">The id of movie to update.</param>
+        /// <param name="mdto">The movie to update table with.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -106,7 +106,7 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Deletes a Movie from database by id.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The id of movie to delete.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -124,8 +124,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Updates Movie Characters, must pass in id for which movie to update, and list of character ids to add.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="characterIds"></param>
+        /// <param name="id">The id of movie to add to.</param>
+        /// <param name="characterIds">List of character ids</param>
         /// <returns></returns>
         [HttpPut("{id}/characters")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -143,8 +143,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Fetches all the characters in a movie
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The movie id to fetch characters from.</param>
+        /// <returns>Returns data of characters in movie.</returns>
         [HttpGet("{id}/characters")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

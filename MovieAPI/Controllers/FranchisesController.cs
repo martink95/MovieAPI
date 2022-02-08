@@ -32,7 +32,7 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Fetches all the Franchises
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns data of all franchises</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FranchiseReadDTO>>> GetAllFranchises()
@@ -43,8 +43,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Fetches a specific Franchise by id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The id of franchise to fetch</param>
+        /// <returns>Returns data of given franchise</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -61,8 +61,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Adds a new franchise to the database.
         /// </summary>
-        /// <param name="fdto"></param>
-        /// <returns></returns>
+        /// <param name="fdto">The franchise object to add.</param>
+        /// <returns>Returns the added franchise data.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Franchise>> PostFranchise(FranchiseCreateDTO fdto)
@@ -79,8 +79,8 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Updates a franchise, must pass a full Franchise object and Id in route.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="fdto"></param>
+        /// <param name="id">The id of franchise to update.</param>
+        /// <param name="fdto">The franchise object to update.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -103,7 +103,7 @@ namespace MovieAPI.Controllers
         /// <summary>
         /// Deletes a franchise from the database by id.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The id of franchise to delete.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -119,10 +119,10 @@ namespace MovieAPI.Controllers
         }
 
         /// <summary>
-        /// Fetches all the movies in a franchise
+        /// Fetches all the movies in a franchise.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The id of franchise to get movies from.</param>
+        /// <returns>Returns data of movies.</returns>
         [HttpGet("{id}/movies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -133,6 +133,12 @@ namespace MovieAPI.Controllers
 
             return _mapper.Map<List<MovieReadDTO>>(await _franchiseService.GetFranchiseMoviesAsync(id));
         }
+
+        /// <summary>
+        /// Fetches all the characters in a franchise.
+        /// </summary>
+        /// <param name="id">The id of franchise to get characters from.</param>
+        /// <returns>Returns data of characters.</returns>
         [HttpGet("{id}/characters")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

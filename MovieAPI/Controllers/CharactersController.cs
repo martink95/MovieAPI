@@ -2,6 +2,7 @@
 using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Interfaces;
 using MovieAPI.Models.Domain;
@@ -27,13 +28,25 @@ namespace MovieAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Fetches all the Characters.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IEnumerable<CharacterReadDTO>> GetAllCharacters()
         {
             return _mapper.Map<List<CharacterReadDTO>>(await _characterService.GetAllCharactersAsync());
         }
 
+        /// <summary>
+        /// Fetches a Character by Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CharacterReadDTO>> GetCharacter(int id)
         {
             Character character = await _characterService.GetSpecificCharacterAsync(id);
@@ -44,7 +57,16 @@ namespace MovieAPI.Controllers
             return _mapper.Map<CharacterReadDTO>(character);
         }
 
+        /// <summary>
+        /// Updates a character, must pass a full Character object and Id to route.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cdto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateCharacter(int id, CharacterUpdateDTO cdto)
         {
             if (id != cdto.Id)
@@ -59,7 +81,13 @@ namespace MovieAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Adds a new Character to database.
+        /// </summary>
+        /// <param name="cdto"></param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Character>> PostCharacter(CharacterCreateDTO cdto)
         {
             var domainCharacter = _mapper.Map<Character>(cdto);
@@ -71,7 +99,14 @@ namespace MovieAPI.Controllers
                 _mapper.Map<CharacterReadDTO>(domainCharacter));
         }
 
+        /// <summary>
+        /// Deletes Character from database by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCharacter(int id)
         {
             if (!_characterService.CharacterExists(id))

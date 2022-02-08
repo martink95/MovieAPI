@@ -56,5 +56,35 @@ namespace MovieAPI.Services
             return _context.Franchises.Any(f => f.Id == id);
         }
 
+        public async Task<IEnumerable<Movie>> GetFranchiseMoviesAsync(int id)
+        {
+            var franchise = await _context.Franchises
+                .Include(f => f.Movies)
+                .FirstAsync(f => f.Id == id);
+
+            var movies = new List<Movie>();
+
+            foreach (var movie in franchise.Movies)
+                movies.Add(movie);
+            return movies;
+        }
+
+        public async Task<IEnumerable<Character>> GetFranchiseCharactersAsync(int id)
+        {
+            var franchise = await _context.Franchises
+                .Include(f => f.Movies)
+                .ThenInclude(m => m.Characters)
+                .FirstAsync(f => f.Id == id);
+
+            var characters = new List<Character>();
+            foreach (var movie in franchise.Movies)
+            {
+                foreach (var character in movie.Characters)
+                {
+                    characters.Add(character);
+                }
+            }
+            return characters;
+        }
     }
 }

@@ -2,9 +2,11 @@
 using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Interfaces;
 using MovieAPI.Models.Domain;
+using MovieAPI.Models.DTO.Character;
 using MovieAPI.Models.DTO.Franchise;
 using MovieAPI.Models.DTO.Movie;
 using MovieAPI.Services;
@@ -27,13 +29,25 @@ namespace MovieAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Fetches all the Franchises
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FranchiseReadDTO>>> GetAllFranchises()
         {
             return _mapper.Map<List<FranchiseReadDTO>>(await _franchiseService.GetAllFranchisesAsync());
         }
 
+        /// <summary>
+        /// Fetches a specific Franchise by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
             Franchise franchise = await _franchiseService.GetSpecificFranchiseAsync(id);
@@ -44,7 +58,13 @@ namespace MovieAPI.Controllers
             return _mapper.Map<FranchiseReadDTO>(franchise);
         }
 
+        /// <summary>
+        /// Adds a new franchise to the database.
+        /// </summary>
+        /// <param name="fdto"></param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Franchise>> PostFranchise(FranchiseCreateDTO fdto)
         {
             var domainFranchise = _mapper.Map<Franchise>(fdto);
@@ -56,12 +76,20 @@ namespace MovieAPI.Controllers
                 _mapper.Map<FranchiseReadDTO>(domainFranchise));
         }
 
+        /// <summary>
+        /// Updates a franchise, must pass a full Franchise object and Id in route.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fdto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateFranchise(int id, FranchiseUpdateDTO fdto)
         {
             if (id != fdto.Id)
                 return BadRequest();
-
 
             if (!_franchiseService.FranchiseExists(id))
                 return NotFound();
@@ -72,7 +100,14 @@ namespace MovieAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes a franchise from the database by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteFranchise(int id)
         {
             if (!_franchiseService.FranchiseExists(id))
@@ -83,5 +118,30 @@ namespace MovieAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Fetches all the movies in a franchise
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/movies")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetFranchiseMovies(int id)
+        {
+            if (!_franchiseService.FranchiseExists(id))
+                return NotFound();
+
+            return _mapper.Map<List<MovieReadDTO>>(await _franchiseService.GetFranchiseMoviesAsync(id));
+        }
+        [HttpGet("{id}/characters")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetFranchiseCharacters(int id)
+        {
+            if (!_franchiseService.FranchiseExists(id))
+                return NotFound();
+
+            return _mapper.Map<List<CharacterReadDTO>>(await _franchiseService.GetFranchiseCharactersAsync(id));
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace MovieAPI.Interfaces
         public Task UpdateMovieAsync(Movie movie);
         public Task DeleteMovieAsync(int id);
         public Task UpdateMovieCharacters(int movieId, List<int> characters);
+        public Task<IEnumerable<Character>> GetMovieCharactersAsync(int movieId);
         public bool MovieExists(int id);
     }
 }

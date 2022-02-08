@@ -12,7 +12,8 @@ namespace MovieAPI.Interfaces
         public Task<Franchise> AddFranchiseAsync(Franchise franchise);
         public Task UpdateFranchiseAsync(Franchise franchise);
         public Task DeleteFranchiseAsync(int id);
-
+        public Task<IEnumerable<Movie>> GetFranchiseMoviesAsync(int franchiseId);
+        public Task<IEnumerable<Character>> GetFranchiseCharactersAsync(int franchiseId);
         public bool FranchiseExists(int id);
     }
 }

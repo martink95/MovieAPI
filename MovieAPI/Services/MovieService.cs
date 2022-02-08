@@ -73,5 +73,19 @@ namespace MovieAPI.Services
             movieToUpdateCharacters.Characters = characters;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Character>> GetMovieCharactersAsync(int id)
+        {
+            var movie = await _context.Movies
+                .Include(m => m.Characters)
+                .FirstAsync(m => m.Id == id);
+
+            var characters = new List<Character>();
+
+            foreach(var character in movie.Characters) characters.Add(character);
+
+            return characters;
+        }
+        
     }
 }

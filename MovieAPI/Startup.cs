@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MovieAPI.Interfaces;
@@ -40,7 +42,28 @@ namespace MovieAPI
             services.AddScoped<IFranchiseService, FranchiseService>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MovieAPI",
+                    Version = "v1",
+                    Description = "Movie API created for Noroff assignment",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Martin Kanestrøm",
+                        Email = string.Empty,
+                        Url = new Uri("https://linkedin.com/in/martin-kanestrom/"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name ="Use under MIT",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
             });
         }
 
